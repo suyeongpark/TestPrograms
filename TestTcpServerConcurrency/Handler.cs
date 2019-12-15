@@ -13,8 +13,8 @@ namespace TestTcpServerConcurrency
 {
     public class Handler : IDisposable
     {
-        public event Action<string, IPacket> Receive;
-        public event Action<string, string> Disconnect;
+        public event Func<string, IPacket, Task> Receive;
+        public event Func<string, string, Task> Disconnect;
 
         TcpClient client;
         string stageID, userID;
@@ -26,13 +26,22 @@ namespace TestTcpServerConcurrency
             this.client = client;
         }
 
+        public bool Connected { get { return this.client.Connected; } }
+
         public void Dispose()
         {
-            Disconnect(this.stageID, this.userID);
-            this.client.Close();
+            if (this.client.Connected)
+            {
+                this.client.Close();
+            }
         }
 
-        public void Start()
+        public void SetStageID(string stageID)
+        {
+            this.stageID = stageID;
+        }
+
+        async public Task StartAsync()
         {
             NetworkStream stream;
             IPacket received;
@@ -40,9 +49,9 @@ namespace TestTcpServerConcurrency
             int nbytes, receiveDataLength;
 
             // 클라이언트에서 오는 메세지를 듣기 위해 별도의 쓰레드를 돌린다.
-            Thread thread = new Thread(() =>
+            await Task.Factory.StartNew(async () =>
             {
-                while (client.Connected)
+                while (this.client.Connected)
                 {
                     try
                     {
@@ -50,37 +59,34 @@ namespace TestTcpServerConcurrency
 
                         // 1. 결과의 헤더를 받는다.
                         receiveHeader = new byte[Consts.SIZE_HEADER];
-                        nbytes = stream.Read(buffer: receiveHeader, offset: 0, size: receiveHeader.Length);
+                        nbytes = await stream.ReadAsync(buffer: receiveHeader, offset: 0, count: receiveHeader.Length);
 
                         // 2. 결과의 데이터를 받는다.
                         receiveDataLength = BitConverter.ToInt32(value: receiveHeader, startIndex: 0);
-                        receiveData = TcpUtil.ReceiveData(networkStream: stream, dataLength: receiveDataLength);
+                        receiveData = await TcpUtil.ReceiveDataAsync(networkStream: stream, dataLength: receiveDataLength);
 
-                        stream.Flush();
+                        await stream.FlushAsync();
 
                         // 3. 결과는 압축되어 있으므로 푼다.
-                        decompressData = NetUtil.Decompress(data: receiveData);
+                        decompressData = await NetUtil.DecompressAsync(data: receiveData);
                         received = NetUtil.DeserializeObject(data: decompressData) as IPacket;
 
-                        Receive(this.stageID, received);
+                        await Receive(this.stageID, received);
                     }
                     catch (SocketException)
                     {
-                        Dispose();
+                        await Disconnect(this.stageID, this.userID);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
-                        Dispose();
+                        await Disconnect(this.stageID, this.userID);
                     }
                 }
             });
-
-            thread.IsBackground = true;
-            thread.Start();
         }
 
-        public void Send(IPacket packet)
+        async public Task SendAsync(IPacket packet)
         {
             try
             {
@@ -88,17 +94,17 @@ namespace TestTcpServerConcurrency
 
                 // 1. 보낼 데이터를 압축한다.
                 byte[] sendData = NetUtil.SerializeObject(data: packet);
-                byte[] compressData = NetUtil.Compress(data: sendData);
+                byte[] compressData = await NetUtil.CompressAsync(data: sendData);
 
                 // 2. 요청의 헤더를 보낸다.
                 int sendDataLength = compressData.Length;
                 byte[] sendHeader = BitConverter.GetBytes(value: sendDataLength);
-                stream.Write(buffer: sendHeader, offset: 0, size: sendHeader.Length);
+                await stream.WriteAsync(buffer: sendHeader, offset: 0, count: sendHeader.Length);
 
                 // 3. 요청을 보낸다.
-                TcpUtil.SendData(networkStream: stream, data: compressData, dataLength: sendDataLength);
+                await TcpUtil.SendDataAsync(networkStream: stream, data: compressData, dataLength: sendDataLength);
 
-                stream.Flush();
+                await stream.FlushAsync();
             }
             catch (Exception ex)
             {
