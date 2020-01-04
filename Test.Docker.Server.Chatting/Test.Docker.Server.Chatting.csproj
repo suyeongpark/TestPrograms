@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Test.Docker.DbConnector\Test.Docker.DbConnector.csproj" />
+    <ProjectReference Include="..\Test.Docker.Variable\Test.Docker.Variable.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Suyeong.Core.Net.Lib">
+      <HintPath>..\references\Suyeong.Core.Net.Tcp\Suyeong.Core.Net.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Suyeong.Core.Net.Tcp">
+      <HintPath>..\references\Suyeong.Core.Net.Tcp\Suyeong.Core.Net.Tcp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

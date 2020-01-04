@@ -20,12 +20,12 @@ namespace TestUdpClient
         {
             int index = 0;
             string ip = Client_IP;
-            UdpClientSync client = new UdpClientSync(SERVER_IP, SERVER_PORT);
+            UdpClientSimpleSync client = new UdpClientSimpleSync(SERVER_IP, SERVER_PORT);
             PacketValue packet;
 
             while (true)
             {
-                packet = client.Send(new PacketValue(ip, index++), null) as PacketValue;
+                packet = client.Send(new PacketValue(ip, index++)) as PacketValue;
 
                 Console.WriteLine($"receive: {packet.Value}");
                 Thread.Sleep(2000);

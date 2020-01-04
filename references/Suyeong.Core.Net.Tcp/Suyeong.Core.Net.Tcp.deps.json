@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Suyeong.Core.Net.Tcp/1.0.0": {
+        "dependencies": {
+          "Suyeong.Core.Net.Lib": "1.0.0"
+        },
+        "runtime": {
+          "Suyeong.Core.Net.Tcp.dll": {}
+        }
+      },
+      "Suyeong.Core.Net.Lib/1.0.0": {
+        "runtime": {
+          "Suyeong.Core.Net.Lib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Suyeong.Core.Net.Tcp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Suyeong.Core.Net.Lib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

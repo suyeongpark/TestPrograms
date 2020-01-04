@@ -16,11 +16,11 @@ namespace TestUdpServer
         {
             int count = 0;
             UdpListenerSimpleSync listener = new UdpListenerSimpleSync(SERVER_PORT);
-            listener.ListenerStart(callback: (IPacket packet) =>
+            listener.Start(callback: (IPacket packet) =>
             {
                 PacketValue value = packet as PacketValue;
                 Console.WriteLine($"receive: {value.Protocol}, {value.Value}");
-                return new PacketValue(protocol: listener.LocalEndPoint.ToString(), count++);
+                return new PacketValue(protocol: packet.Protocol, count++);
             });
         }
     }
