@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using Suyeong.Core.Net.Lib;
 using Suyeong.Core.Net.Tcp;
+using Suyeong.Core.Util;
+using Test.Docker.Type;
+using Test.Docker.Variable;
 
 namespace Test.Docker.Server.Login
 {
@@ -16,7 +19,7 @@ namespace Test.Docker.Server.Login
 
         async public static Task Listening()
         {
-            await _listener.StartAsync(callback: ReturnRequest);
+            await _listener.StartAsync(callback: ReturnRequest).ConfigureAwait(false);
         }
 
         async static Task<IPacket> ReturnRequest(IPacket packet)
@@ -25,20 +28,22 @@ namespace Test.Docker.Server.Login
 
             switch (packet.Protocol)
             {
+                case Protocol.USER_LOGIN:
+                    return await CreateUserInfo(packet: packet as PacketSerialized).ConfigureAwait(false);
 
                 default:
                     return new PacketValue(protocol: string.Empty, value: 0);
             }
         }
 
-        //async static Task<PacketValue> CreateUserInfo(PacketSerialized packet)
-        //{
-        //    UserInfo userInfo = StreamUtil.DeserializeObject(packet.SerializedData) as UserInfo;
+        async static Task<PacketSerialized> CreateUserInfo(PacketSerialized packet)
+        {
+            UserInfo userInfo = (UserInfo)StreamUtil.DeserializeObject(packet.SerializedData);
 
-        //    bool result = await Database.AddUser(userInfo: userInfo, state: (int)DbState.Enable);
+            UserInfo result = await DbManager.GetUserInfo(userID: userInfo.UserID, cryptedPassword: userInfo.Name, state: (int)DbState.Enable).ConfigureAwait(false);
 
-        //    return new PacketValue(protocol: packet.Protocol, value: (result) ? 1 : 0);
-        //}
+            return new PacketSerialized(protocol: packet.Protocol, serializedData: StreamUtil.SerializeObject(result));
+        }
 
         //async static Task<PacketSerialized> GetUserInfo(PacketJson packet)
         //{

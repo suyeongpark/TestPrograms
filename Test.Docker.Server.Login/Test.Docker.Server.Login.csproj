@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test.Docker.DbConnector\Test.Docker.DbConnector.csproj" />
+    <ProjectReference Include="..\Test.Docker.Type\Test.Docker.Type.csproj" />
     <ProjectReference Include="..\Test.Docker.Variable\Test.Docker.Variable.csproj" />
   </ItemGroup>
 
@@ -23,6 +24,9 @@
     </Reference>
     <Reference Include="Suyeong.Core.Net.Tcp">
       <HintPath>..\references\Suyeong.Core.Net.Tcp\Suyeong.Core.Net.Tcp.dll</HintPath>
+    </Reference>
+    <Reference Include="Suyeong.Core.Util">
+      <HintPath>..\references\Suyeong.Core.Util\Suyeong.Core.Util.dll</HintPath>
     </Reference>
   </ItemGroup>
 
