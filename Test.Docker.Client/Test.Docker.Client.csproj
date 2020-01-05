@@ -11,6 +11,24 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Test.Docker.Type\Test.Docker.Type.csproj" />
+    <ProjectReference Include="..\Test.Docker.Variable\Test.Docker.Variable.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Suyeong.Core.Net.Lib">
+      <HintPath>..\references\Suyeong.Core.Net.Tcp\Suyeong.Core.Net.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Suyeong.Core.Net.Tcp">
+      <HintPath>..\references\Suyeong.Core.Net.Tcp\Suyeong.Core.Net.Tcp.dll</HintPath>
+    </Reference>
+    <Reference Include="Suyeong.Core.Util">
+      <HintPath>..\references\Suyeong.Core.Util\Suyeong.Core.Util.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

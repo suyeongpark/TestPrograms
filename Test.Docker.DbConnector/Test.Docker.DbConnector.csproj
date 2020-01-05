@@ -21,6 +21,9 @@
     <Reference Include="Suyeong.Core.DB.MySql">
       <HintPath>..\references\Suyeong.Core.DB.MySql\Suyeong.Core.DB.MySql.dll</HintPath>
     </Reference>
+    <Reference Include="Suyeong.Core.Util">
+      <HintPath>..\references\Suyeong.Core.Util\Suyeong.Core.Util.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -8,9 +8,9 @@ namespace Test.Docker.Server.Login
     {
         static void Main(string[] args)
         {
-            string databaseIP = "";
+            string databaseIP = "localhost";
 
-            DbManager.Init(serverIP: databaseIP, databaseName: Connection.DB_NAME, uid: Connection.DB_NAME, password: Connection.DB_PASSWORD);
+            DbManager.Init(serverIP: databaseIP, databaseName: Connection.DB_NAME, uid: Connection.DB_ID, password: Connection.DB_PASSWORD);
             TcpManager.Init(portNum: Connection.PORT_NUM_SERVER_LOGIN);
 
             Task tcp = Task.Run(TcpManager.Listening);

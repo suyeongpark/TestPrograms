@@ -7,6 +7,76 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="User ID" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <Label Grid.Column="0" Grid.Row="1" Margin="5" Content="Password" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <Label Grid.Column="0" Grid.Row="2" Margin="5" Content="Name" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+
+                <TextBox x:Name="tbAddUserID" Grid.Column="1" Grid.Row="0" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="tbAddUserPassword" Grid.Column="1" Grid.Row="1" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="tbAddUserName" Grid.Column="1" Grid.Row="2" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            </Grid>
+            
+            <Button Grid.Row="2" Width="120" Margin="3" Click="BtnAddUser_Click">Add User</Button>
+        </Grid>
+
+        <Grid Grid.Column="1" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="160"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+
+            <Grid Grid.Row="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="ID" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <Label Grid.Column="0" Grid.Row="1" Margin="5" Content="User ID" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <Label Grid.Column="0" Grid.Row="2" Margin="5" Content="Password" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <Label Grid.Column="0" Grid.Row="3" Margin="5" Content="Name" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+
+                <TextBox x:Name="tbGetID" Grid.Column="1" Grid.Row="0" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center" IsEnabled="False"/>
+                <TextBox x:Name="tbGetUserID" Grid.Column="1" Grid.Row="1" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="tbGetUserPassword" Grid.Column="1" Grid.Row="2" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="tbGetUserName" Grid.Column="1" Grid.Row="3" Margin="5" Height="30" Width="200" HorizontalAlignment="Left" VerticalContentAlignment="Center" IsEnabled="False"/>
+            </Grid>
+
+            <Button Grid.Row="2" Width="120" Margin="3" Click="BtnGetUserInfo_Click">Get User Info</Button>
+        </Grid>
 
     </Grid>
 </Window>

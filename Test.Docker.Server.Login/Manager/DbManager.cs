@@ -16,9 +16,14 @@ namespace Test.Docker.Server.Login
             _database = new MariaDbConnector(serverIP: serverIP, databaseName: databaseName, uid: uid, password: password);
         }
 
-        public static Task<UserInfo> GetUserInfo(string userID, string cryptedPassword, int state)
+        public static Task<bool> AddUser(string userID, string cryptedPassword, string userName)
         {
-            return _database.GetUserInfo(userID: userID, cryptedPassword: cryptedPassword, state: state);
+            return _database.AddUser(userID: userID, passwordCrypted: cryptedPassword, userName: userName);
+        }
+
+        public static Task<UserInfo> GetUserInfo(string userID, string passwordCrypted, int state)
+        {
+            return _database.GetUserInfo(userID: userID, passwordCrypted: passwordCrypted, state: state);
         }
     }
 }

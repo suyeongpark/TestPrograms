@@ -2,7 +2,7 @@
 {
     public static class Protocol
     {
-        public const string USER_LOGIN = "UserLogin";
-        public const string ENTER_ROOM = "EnterRoom";
+        public const string CREATE_USER = "CreateUser";
+        public const string GET_USER = "GetUser";
     }
 }
