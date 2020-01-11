@@ -14,7 +14,6 @@ namespace Test.Docker.Server.Login
             TcpManager.Init(portNum: Connection.PORT_NUM_SERVER_LOGIN);
 
             Task tcp = Task.Run(TcpManager.Listening);
-
             tcp.Wait();
         }
     }

@@ -9,15 +9,15 @@ using Suyeong.Core.Util;
 using Test.Docker.Type;
 using Test.Docker.Variable;
 
-namespace Test.Docker.Server.Login
+namespace Test.Docker.Server.Chatting
 {
     public static class TcpManager
     {
-        static TcpListenerSimpleAsync _listener;
+        static TcpListenerConcurrencyAsync _listener;
 
         public static void Init(int portNum)
         {
-            _listener = new TcpListenerSimpleAsync(portNum: portNum);
+            _listener = new TcpListenerConcurrencyAsync(portNum: portNum);
         }
 
         async public static Task Listening()

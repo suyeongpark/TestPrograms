@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Test.Docker.Database;
 using Test.Docker.Type;
 
-namespace Test.Docker.Server.Login
+namespace Test.Docker.Server.Chatting
 {
     public static class DbManager
     {
