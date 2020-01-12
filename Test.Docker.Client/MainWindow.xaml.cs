@@ -24,17 +24,17 @@ namespace Test.Docker.Client
         {
             InitializeComponent();
 
-            this.client = new TcpClientSimpleAsync(serverIP: "localhost", serverPort: Connection.PORT_NUM_SERVER_LOGIN);
+            this.client = new TcpClientSimpleAsync(serverIP: "localhost", serverPort: Connections.PORT_NUM_SERVER_MAIN);
         }
 
         async private void BtnAddUser_Click(object sender, RoutedEventArgs e)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add(ColumnName.ID, tbAddUserID.Text);
-            dic.Add(ColumnName.PASSWORD, tbAddUserPassword.Text);
-            dic.Add(ColumnName.NAME, tbAddUserName.Text);
+            dic.Add(ColumnNames.ID, tbAddUserID.Text);
+            dic.Add(ColumnNames.PASSWORD, tbAddUserPassword.Text);
+            dic.Add(ColumnNames.NAME, tbAddUserName.Text);
 
-            PacketJson packet = new PacketJson(protocol: Protocol.CREATE_USER, json: JsonConvert.SerializeObject(dic));
+            PacketJson packet = new PacketJson(protocol: Protocols.CREATE_USER, json: JsonConvert.SerializeObject(dic));
 
             tbAddUserID.Text = string.Empty;
             tbAddUserPassword.Text = string.Empty;
@@ -46,13 +46,13 @@ namespace Test.Docker.Client
         async private void BtnGetUserInfo_Click(object sender, RoutedEventArgs e)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add(ColumnName.ID, tbGetUserID.Text);
-            dic.Add(ColumnName.PASSWORD, tbGetUserPassword.Text);
+            dic.Add(ColumnNames.ID, tbGetUserID.Text);
+            dic.Add(ColumnNames.PASSWORD, tbGetUserPassword.Text);
 
-            PacketJson packet = new PacketJson(protocol: Protocol.GET_USER, json: JsonConvert.SerializeObject(dic));
+            PacketJson packet = new PacketJson(protocol: Protocols.GET_USER, json: JsonConvert.SerializeObject(dic));
 
             PacketSerialized result = await this.client.Send(packet).ConfigureAwait(false) as PacketSerialized;
-            UserInfo userInfo = (UserInfo)StreamUtil.DeserializeObject(result.SerializedData);
+            FileInfo userInfo = (FileInfo)StreamUtil.DeserializeObject(result.SerializedData);
 
             this.Dispatcher.Invoke(() =>
             {
