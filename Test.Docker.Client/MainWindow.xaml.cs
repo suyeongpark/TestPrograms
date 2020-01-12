@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
-using Newtonsoft.Json;
+using Microsoft.Win32;
 using Suyeong.Core.Net.Lib;
 using Suyeong.Core.Net.Tcp;
 using Suyeong.Core.Util;
@@ -24,40 +20,41 @@ namespace Test.Docker.Client
         {
             InitializeComponent();
 
-            this.client = new TcpClientSimpleAsync(serverIP: "localhost", serverPort: Connections.PORT_NUM_SERVER_MAIN);
+            this.client = new TcpClientSimpleAsync(serverIP: "127.0.0.1", serverPort: Connections.PORT_NUM_SERVER_MAIN);
         }
 
-        async private void BtnAddUser_Click(object sender, RoutedEventArgs e)
+        async private void BtnAddFile_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add(ColumnNames.ID, tbAddUserID.Text);
-            dic.Add(ColumnNames.PASSWORD, tbAddUserPassword.Text);
-            dic.Add(ColumnNames.NAME, tbAddUserName.Text);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            PacketJson packet = new PacketJson(protocol: Protocols.CREATE_USER, json: JsonConvert.SerializeObject(dic));
+            if (openFileDialog.ShowDialog() == true)
+            {
+                byte[] data = File.ReadAllBytes(openFileDialog.FileName);
+                PacketFile request = new PacketFile(protocol: Protocols.UPLOAD_FILE, desc: Path.GetFileName(openFileDialog.FileName), fileData: data);
+                PacketSerialized result = await this.client.Send(sendPacket: request).ConfigureAwait(false) as PacketSerialized;
+                FileInfoCollection fileInfos = (FileInfoCollection)StreamUtil.DeserializeObject(result.SerializedData);
 
-            tbAddUserID.Text = string.Empty;
-            tbAddUserPassword.Text = string.Empty;
-            tbAddUserName.Text = string.Empty;
+                MessageBox.Show("Upload를 완료했습니다.");
 
-            PacketValue result = await this.client.Send(packet).ConfigureAwait(false) as PacketValue;
+                UpdateGrid(fileInfos: fileInfos);
+            }
         }
 
-        async private void BtnGetUserInfo_Click(object sender, RoutedEventArgs e)
+        async private void BtnGetFileInfo_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add(ColumnNames.ID, tbGetUserID.Text);
-            dic.Add(ColumnNames.PASSWORD, tbGetUserPassword.Text);
-
-            PacketJson packet = new PacketJson(protocol: Protocols.GET_USER, json: JsonConvert.SerializeObject(dic));
+            PacketValue packet = new PacketValue(protocol: Protocols.GET_FILE_LIST, value: 1);
 
             PacketSerialized result = await this.client.Send(packet).ConfigureAwait(false) as PacketSerialized;
-            FileInfo userInfo = (FileInfo)StreamUtil.DeserializeObject(result.SerializedData);
+            FileInfoCollection fileInfos = (FileInfoCollection)StreamUtil.DeserializeObject(result.SerializedData);
 
+            UpdateGrid(fileInfos: fileInfos);
+        }
+
+        void UpdateGrid(FileInfoCollection fileInfos)
+        {
             this.Dispatcher.Invoke(() =>
             {
-                tbGetID.Text = userInfo.ID.ToString();
-                tbGetUserName.Text = userInfo.Name;
+                gridFileList.ItemsSource = fileInfos;
             });
         }
     }

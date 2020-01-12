@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Docker.Variable", "Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetworkLibTest", "NetworkLibTest", "{2DE56A67-4B67-404A-81B0-0B0189D20614}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerTest", "DockerTest", "{10350018-DFD5-4138-937F-8E90C04FA256}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerTestCore", "DockerTestCore", "{10350018-DFD5-4138-937F-8E90C04FA256}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Docker.Server.MainServer", "Test.Docker.Server.MainServer\Test.Docker.Server.MainServer.csproj", "{5C62C164-EFD3-457D-A88B-A3FFA7450E5F}"
 EndProject

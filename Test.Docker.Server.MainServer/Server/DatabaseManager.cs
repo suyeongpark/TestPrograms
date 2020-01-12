@@ -29,7 +29,7 @@ namespace Test.Docker.Server.MainServer
             {
                 MySqlParameter[] parameters = new MySqlParameter[]
                 {
-                    new MySqlParameter(ParameterNames.NAME, userName),
+                    new MySqlParameter(ParameterNames.NAME, fileName),
                     new MySqlParameter(ParameterNames.TYPE, fileType),
                 };
 

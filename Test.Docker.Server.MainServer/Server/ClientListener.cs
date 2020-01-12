@@ -20,7 +20,14 @@ namespace Test.Docker.Server.MainServer
 
         async public static Task Listening()
         {
-            await _listener.StartAsync(callback: ReturnRequest);
+            try
+            {
+                await _listener.StartAsync(callback: ReturnRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         async static Task<IPacket> ReturnRequest(IPacket packet)
@@ -40,15 +47,16 @@ namespace Test.Docker.Server.MainServer
             }
         }
 
-        async static Task<PacketValue> UploadFile(PacketFile packet)
+        async static Task<PacketSerialized> UploadFile(PacketFile packet)
         {
-            FileManager.SetFileToWaitingPath(fileName: packet.FileName, fileData: packet.FileData);
+            FileManager.SetFileToWaitingPath(fileName: packet.Desc, fileData: packet.FileData);
 
-            string fileName = Path.GetFileNameWithoutExtension(packet.FileName);
-            string fileType = Path.GetExtension(packet.FileName);
+            string fileName = Path.GetFileNameWithoutExtension(packet.Desc);
+            string fileType = Path.GetExtension(packet.Desc);
             bool result = await DatabaseManager.AddFile(fileName: fileName, fileType: fileType);
 
-            return new PacketValue(protocol: packet.Protocol, value: (result) ? 1 : 0);
+            FileInfoCollection files = await DatabaseManager.GetFileList();
+            return new PacketSerialized(protocol: packet.Protocol, serializedData: StreamUtil.SerializeObject(files));
         }
 
         async static Task<PacketSerialized> GetFileList(PacketValue packet)
